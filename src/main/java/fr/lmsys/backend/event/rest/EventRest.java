@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.lmsys.backend.event.modele.Event;
 import fr.lmsys.backend.event.modele.TypeEvenement;
 import fr.lmsys.backend.event.service.EventService;
-import fr.lmsys.backend.event.service.impl.UserServiceImpl;
 
 
 @RestController

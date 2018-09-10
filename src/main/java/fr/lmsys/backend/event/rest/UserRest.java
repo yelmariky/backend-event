@@ -54,7 +54,7 @@ public class UserRest {
 		
 		mail.setSubject("création de compte");
 		mail.setText("Nous avons le plaisir de vous inscrire sur notre site internet. \n merci de vous connecter via ce lien "
-				+" https://" + urlfrontend + "/acceuil/"+user.getIdUsers()+"\n Cordialement. ");
+				+ urlfrontend + "/acceuil/"+user.getIdUsers()+"\n Cordialement. ");
 		
 		mailService.sendNotification(from, mail.getTo(), mail.getSubject(),mail.getText());
 		}
@@ -100,7 +100,7 @@ public class UserRest {
 			throw new Exception("mail not found");
 		}
 		mailService.sendNotification(from,mail, "Modification du mot de pass", "Veuillez modifier votre mot de pass \n cliquer sur "
-				+ "le lien suivant https://" + urlfrontend + "/changepass/" + user.getIdUsers() + "\n Cordialement");
+				+ "le lien suivant "+ urlfrontend + "/changepass/" + user.getIdUsers() + "\n Cordialement");
 		return user;
 	}
 	
