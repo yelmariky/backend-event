@@ -34,10 +34,16 @@ import fr.lmsys.backend.event.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
 	UserRepository userRepository;
-	@Autowired
 	ContactRepository contactRepository;
+	CryptSh crypter;
+	
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository,ContactRepository contact,CryptSh crypter) {
+		this.userRepository=userRepository;
+		this.contactRepository=contact;
+		this.crypter=crypter;
+	}
 	
 	@Value("${mail.sav}")
 	String savmail;
@@ -50,8 +56,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private MailService emailSender;
-	@Autowired
-	public CryptSh crypter;
 
 	
 	@Autowired

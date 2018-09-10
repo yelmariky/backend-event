@@ -17,17 +17,23 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import fr.lmsys.backend.event.jpa.UsersEntity;
 import fr.lmsys.backend.event.modele.User;
+import fr.lmsys.backend.event.repositories.ContactRepository;
 import fr.lmsys.backend.event.repositories.UserRepository;
+import fr.lmsys.backend.event.service.impl.CryptSh;
 import fr.lmsys.backend.event.service.impl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 
 public class UserServiceUnitTest {
 	
-	@InjectMocks
-	private UserServiceImpl userService=new UserServiceImpl();
 	@Mock
 	private UserRepository userRepository;
+	@Mock
+	private ContactRepository contactRepo;
+	@Mock
+	private CryptSh crypt;
+	@InjectMocks
+	private UserServiceImpl userService;
 	
 
 	User user;
@@ -60,6 +66,7 @@ public class UserServiceUnitTest {
 	
 		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(null);
 		Mockito.when(userRepository.save(ujpa)).thenReturn(ujpa);
+		//userService=new UserServiceImpl(userRepository,contactRepo);
 		userService.saveUser(user);
 		
 		 Mockito.verify(userRepository, Mockito.times(1)).save(ujpa);
