@@ -1,0 +1,8 @@
+archived
+archive
+target
+.settings
+.classpath
+*.log
+*.sql
+.project

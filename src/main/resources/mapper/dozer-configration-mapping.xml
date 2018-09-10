@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <configuration>
+       <custom-converters>
+              <converter type="fr.lmsys.backend.event.tools.LocalDateTimeDozerConverter">
+                <class-a>java.time.LocalDateTime</class-a>
+                <class-b>java.time.LocalDateTime</class-b>
+            </converter>
+             <converter type="fr.lmsys.backend.event.tools.LocalDateDozerConverter">
+                <class-a>java.time.LocalDate</class-a>
+                <class-b>java.time.LocalDate</class-b>
+            </converter>
+        </custom-converters>
+       
+    </configuration>
+        
+      <mapping>
+        <class-a>fr.lmsys.backend.event.jpa.EventEntity</class-a>
+        <class-b>fr.lmsys.backend.event.modele.Event</class-b>
+<field-exclude type="one-way">
+	    <a>userEvent</a>
+	    <b>userEvent</b>
+	</field-exclude>
+       
+    </mapping>
+    
+    <mapping>
+		<class-a>fr.lmsys.backend.event.jpa.UsersEntity</class-a>
+		<class-b>fr.lmsys.backend.event.modele.User</class-b>
+	
+	</mapping>
+	
+<!--      <mapping> -->
+<!--         <class-a>fr.lmsys.backend.event.jpa.ContactEntity</class-a> -->
+<!--         <class-b>fr.lmsys.backend.event.modele.Contact</class-b> -->
+<!-- <field-exclude> -->
+<!-- 	    <a>userContact</a> -->
+<!-- 	    <b>userContact</b> -->
+<!-- 	</field-exclude> -->
+       
+<!--     </mapping> -->
+    
+
+</mappings>
