@@ -27,7 +27,7 @@ import fr.lmsys.backend.event.service.EventService;
 @RestController
 //@CrossOrigin
 @RequestMapping("/api/events")
-public class EventRest  {
+public class EventRest   {
 	@Autowired
 	private EventService eventService;
 	private static final Logger logger = LoggerFactory.getLogger(EventRest.class);
