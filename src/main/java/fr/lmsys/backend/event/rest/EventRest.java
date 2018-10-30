@@ -32,7 +32,7 @@ public class EventRest   {
 	private EventService eventService;
 	private static final Logger logger = LoggerFactory.getLogger(EventRest.class);
 	@Value("${backend.host}")
-	String servername;
+	String urlName;
 	
 /*
 	@RequestMapping(value = "/_save", method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public class EventRest   {
 			 return new ResponseEntity<Event>(event, HttpStatus.NOT_ACCEPTABLE);
 		 }
 		 logger.info("**** remote host:"+request.getRemoteHost());
-		 return new ResponseEntity<Event>(eventService.saveEvent(event, "https://"+servername+request.getContextPath()+"/api/upload/user/"), HttpStatus.OK);
+		 return new ResponseEntity<Event>(eventService.saveEvent(event, urlName+request.getContextPath()+"/api/upload/user/"), HttpStatus.OK);
 	}
 	 
 	//@CrossOrigin(origins={"https://lebonevenement.fr","http://localhost:4200"},maxAge=600)

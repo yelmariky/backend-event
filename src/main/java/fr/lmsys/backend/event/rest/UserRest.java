@@ -81,12 +81,10 @@ public class UserRest {
 		return userService.findUser(idUser);
 	}
 	
-	//@CrossOrigin(origins={"http://lebonevenement.fr","http://localhost:4200"})
-	@RequestMapping(value = "/_get", method = RequestMethod.GET)
-	public ResponseEntity findUserByMailAndPass(@RequestParam(value = "mail") String mail,
-			@RequestParam(value = "pass") String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		
-		User user = userService.findUserByMailAndPass(mail, password);
+	@RequestMapping(value = "/_find", method = RequestMethod.POST)
+	public ResponseEntity findUserByPost(@RequestBody User userToFind) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		System.out.println("mail: "+userToFind.getEmail());
+		User user = userService.findUserByMailAndPass(userToFind.getEmail(), userToFind.getPassword());
 		if (user == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
