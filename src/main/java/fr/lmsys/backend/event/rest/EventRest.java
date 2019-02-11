@@ -74,10 +74,10 @@ public class EventRest   {
 	}
 
 	@RequestMapping(value = "/_update/id/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateIframe(@PathVariable(value = "id") Long id, @RequestBody Event event) {
+	public ResponseEntity<Event> updateIframe(@PathVariable(value = "id") Long id, @RequestBody Event event) {
 		Event iframeToUpdate = eventService.updateEvent(event, id);
 		if (event == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Event>(iframeToUpdate, HttpStatus.OK);
 
