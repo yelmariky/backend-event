@@ -27,12 +27,12 @@ import fr.lmsys.backend.event.service.EventService;
 @RestController
 //@CrossOrigin
 @RequestMapping("/api/events")
-public class EventRest  {
+public class EventRest   {
 	@Autowired
 	private EventService eventService;
 	private static final Logger logger = LoggerFactory.getLogger(EventRest.class);
 	@Value("${backend.host}")
-	String servername;
+	String urlName;
 	
 /*
 	@RequestMapping(value = "/_save", method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public class EventRest  {
 			 return new ResponseEntity<Event>(event, HttpStatus.NOT_ACCEPTABLE);
 		 }
 		 logger.info("**** remote host:"+request.getRemoteHost());
-		 return new ResponseEntity<Event>(eventService.saveEvent(event, "https://"+servername+request.getContextPath()+"/api/upload/user/"), HttpStatus.OK);
+		 return new ResponseEntity<Event>(eventService.saveEvent(event, urlName+request.getContextPath()+"/api/upload/user/"), HttpStatus.OK);
 	}
 	 
 	//@CrossOrigin(origins={"https://lebonevenement.fr","http://localhost:4200"},maxAge=600)
@@ -74,10 +74,10 @@ public class EventRest  {
 	}
 
 	@RequestMapping(value = "/_update/id/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateIframe(@PathVariable(value = "id") Long id, @RequestBody Event event) {
+	public ResponseEntity<Event> updateIframe(@PathVariable(value = "id") Long id, @RequestBody Event event) {
 		Event iframeToUpdate = eventService.updateEvent(event, id);
 		if (event == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Event>(iframeToUpdate, HttpStatus.OK);
 

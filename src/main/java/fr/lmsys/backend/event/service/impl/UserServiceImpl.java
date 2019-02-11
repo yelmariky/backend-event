@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.dozer.MappingException;
 import org.slf4j.Logger;
@@ -19,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Strings;
 
 import fr.lmsys.backend.event.jpa.ContactEntity;
 import fr.lmsys.backend.event.jpa.UsersEntity;
@@ -66,14 +62,12 @@ public class UserServiceImpl implements UserService {
 	public User saveUser(User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		user.setIdUsers(UUID.randomUUID().toString());
 		UsersEntity userJpa = dozerBeanMapper.map(user, UsersEntity.class);
-		logger.info("first mapper: OK");
 		// cherche si le mail existe
 		if (CollectionUtils.isEmpty(userRepository.findByEmail(userJpa.getEmail()))) {
 			logger.debug("findByEmail repo: OK");
 			userJpa.setPassword(crypter.generateStorngPasswordHash(user.getPassword()));
 			
 			UsersEntity userEntity= userRepository.save(userJpa);
-			logger.debug("AfterSave repo: OK");
 			
 			return dozerBeanMapper.map(userEntity, User.class);
 		}
@@ -108,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
 	}
 	
-	public User updateUser(User user,boolean isMail) throws AddressException, MessagingException, UnsupportedEncodingException, MappingException  {
+	public User updateUser(User user,boolean isMail) throws UnsupportedEncodingException, MappingException  {
 		List<UsersEntity> usersE = userRepository.findByEmail(user.getEmail());
 		UsersEntity userEntity = CollectionUtils.isEmpty(usersE) ? null : usersE.get(0);
 
@@ -116,7 +110,7 @@ public class UserServiceImpl implements UserService {
 			if(CollectionUtils.isNotEmpty(user.getContacts())){
 				dozerBeanMapper.map(user, userEntity);
 				Contact contact= user.getContacts().iterator().hasNext()? user.getContacts().iterator().next():null;
-				if(Strings.isNullOrEmpty(contact.getIdContact())){
+				if(StringUtils.isBlank(contact.getIdContact())){
 					
 					ContactEntity c = dozerBeanMapper.map(user.getContacts().iterator().next(),ContactEntity.class);
 					c.setIdContact(UUID.randomUUID().toString());
@@ -142,13 +136,6 @@ public class UserServiceImpl implements UserService {
 			        */
 			       // emailSender.sendMail(from, savmail, mail.getSubject(), mail.getText());
 			        emailSender.sendMail(from,savmail, mail.getSubject(), mail.getText());
-					
-			        /*
-					mail.setSubject(contact.getSujet());
-					mail.setText(contact.getMessage());
-					//envoi de mail vers l'équipe aprés vente
-					mailService.sendSslMessage(mail.getTo(), mail.getSubject(),mail.getText());
-										*/
 				}
 			}
 			
