@@ -20,35 +20,37 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket postsEventApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-event")
-				.apiInfo(apiInfo()).select().paths(postPathEvents()).build();
+		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-event").apiInfo(apiInfo()).select()
+				.paths(postPathEvents()).build();
 	}
+
 	@Bean
 	public Docket postsUserApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-user")
-				.apiInfo(apiInfo()).select().paths(postPathUsers()).build();
+		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-user").apiInfo(apiInfo()).select()
+				.paths(postPathUsers()).build();
 	}
+
 	@Bean
 	public Docket getEventApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-images")
-				.apiInfo(apiInfo()).select().paths(postDocumentationApi()).build();
+		return new Docket(DocumentationType.SWAGGER_2).groupName("api-backend-images").apiInfo(apiInfo()).select()
+				.paths(postDocumentationApi()).build();
 	}
 
 	private Predicate<String> postPathEvents() {
 		return or(regex("/api/events.*"));
 	}
+
 	private Predicate<String> postPathUsers() {
 		return or(regex("/api/user.*"));
 	}
+
 	private Predicate<String> postDocumentationApi() {
 		return or(regex("/api/upload.*"));
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("API BACKEND EVENT")
-				.description("api pour gérer les évenements")
-				.termsOfServiceUrl("http://localhost:8081")
-				.license("EVENEMENT API License LMSYS")
+		return new ApiInfoBuilder().title("API BACKEND EVENT").description("api pour gérer les évenements")
+				.termsOfServiceUrl("http://localhost:8081").license("EVENEMENT API License LMSYS")
 				.licenseUrl("lmsys.contact@gmail.com").version("1.0").build();
 	}
 

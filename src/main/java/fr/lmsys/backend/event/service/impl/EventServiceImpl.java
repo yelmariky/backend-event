@@ -88,7 +88,7 @@ public class EventServiceImpl implements EventService {
 	public Event updateEvent(Event event, Long id) {
 		EventEntity eventToUpdate = eventRepository.findOne(id);
 
-		if (eventToUpdate != null) {
+		if (eventToUpdate!=null) {
 			dozerBeanMapper.map(event, eventToUpdate);
 
 			eventRepository.save(eventToUpdate);

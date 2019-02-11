@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,27 +13,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.lmsys.backend.event.modele.Mail;
-import fr.lmsys.backend.event.service.impl.UserServiceImpl;
+import fr.lmsys.backend.event.service.impl.MailService;
 
 @RestController
 //@CrossOrigin
 @RequestMapping("/api/mail")
 public class MailRest {
 	@Autowired
-    public JavaMailSender emailSender;
+	private MailService mailService;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MailRest.class);
 	
 	
 	@RequestMapping(value = "/_send", method = RequestMethod.POST)
 	public void sendMail( @RequestBody Mail mail) throws Exception {
-		SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setTo(mail.getTo()); 
-        message.setSubject(mail.getSubject()); 
-        message.setText(mail.getText());
-        message.setFrom(mail.getFrom());
         logger.info("begin send message ");
-		emailSender.send(message);
+        mailService.sendMail(mail.getFrom(), mail.getTo(),mail.getSubject(), mail.getText());
 		logger.info("begin send message ");
 		
 		

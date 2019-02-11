@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.lmsys.backend.event.modele.Mail;
 import fr.lmsys.backend.event.modele.User;
 import fr.lmsys.backend.event.service.UserService;
-import fr.lmsys.backend.event.service.impl.NotificationService;
+import fr.lmsys.backend.event.service.impl.MailService;
 
 @RestController
 //@CrossOrigin
@@ -35,7 +34,7 @@ public class UserRest {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private NotificationService mailService;
+	private MailService mailService;
 	
 	@Value("${server.frontend}")
 	private String urlfrontend;
@@ -56,16 +55,16 @@ public class UserRest {
 		mail.setText("Nous avons le plaisir de vous inscrire sur notre site internet. \n merci de vous connecter via ce lien "
 				+ urlfrontend + "/acceuil/"+user.getIdUsers()+"\n Cordialement. ");
 		
-		mailService.sendNotification(from, mail.getTo(), mail.getSubject(),mail.getText());
+		mailService.sendMail(from, mail.getTo(), mail.getSubject(),mail.getText());
 		}
 		return userRes;
 	}
 
 	@RequestMapping(value = "/_update/pass", method = RequestMethod.POST)
-	public ResponseEntity<?> changePassword(@RequestBody User userToChange) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public ResponseEntity<User> changePassword(@RequestBody User userToChange) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User user = userService.changePassword(userToChange.getIdUsers(), userToChange.getPassword());
 		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -82,11 +81,10 @@ public class UserRest {
 	}
 	
 	@RequestMapping(value = "/_find", method = RequestMethod.POST)
-	public ResponseEntity findUserByPost(@RequestBody User userToFind) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		System.out.println("mail: "+userToFind.getEmail());
+	public ResponseEntity<User> findUserByPost(@RequestBody User userToFind) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User user = userService.findUserByMailAndPass(userToFind.getEmail(), userToFind.getPassword());
 		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
@@ -97,27 +95,27 @@ public class UserRest {
 		if (user == null) {
 			throw new Exception("mail not found");
 		}
-		mailService.sendNotification(from,mail, "Modification du mot de pass", "Veuillez modifier votre mot de pass \n cliquer sur "
+		mailService.sendMail(from,mail, "Modification du mot de pass", "Veuillez modifier votre mot de pass \n cliquer sur "
 				+ "le lien suivant "+ urlfrontend + "/changepass/" + user.getIdUsers() + "\n Cordialement");
 		return user;
 	}
 	
 	@RequestMapping(value = "/_update", method = RequestMethod.POST)
-	public ResponseEntity<?> updateUser( @RequestBody User user,@RequestParam(value = "ismail") boolean isMail) throws AddressException, MessagingException, UnsupportedEncodingException {
+	public ResponseEntity<User> updateUser( @RequestBody User user,@RequestParam(value = "ismail") boolean isMail) throws AddressException, MessagingException, UnsupportedEncodingException {
 		User userToUpdate = userService.updateUser(user,isMail);
 		
 		
 		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<User>(userToUpdate, HttpStatus.OK);
 
 	}
 	@RequestMapping(value = "/_activate", method = RequestMethod.POST)
-	public ResponseEntity<?> activateUser( @RequestBody String idUser) {
+	public ResponseEntity<User> activateUser( @RequestBody String idUser) {
 		User userToUpdate = userService.activateUser(idUser);
 		if (userToUpdate == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<User>(userToUpdate, HttpStatus.OK);
 
@@ -127,7 +125,7 @@ public class UserRest {
 	public ResponseEntity<Integer> calculNbEvent(@PathVariable(value = "id_user") String idUser) {
 		User user = userService.findUser(idUser);
 		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Integer>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Integer>(user.getEventsRealises().size(), HttpStatus.OK);
 
