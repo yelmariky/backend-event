@@ -2,7 +2,11 @@ package fr.lmsys.backend.event.tools;
 
 
 public class FileUploadUtil {
-
+/**
+ * 
+ * @param contentType
+ * @return
+ */
 	public static boolean isValidImageFile(String contentType) {
 		if (!(contentType.equals("image/pjpeg") || contentType.equals("image/jpeg") || contentType.equals("image/png")
 				|| contentType.equals("image/gif") || contentType.equals("image/bmp")
