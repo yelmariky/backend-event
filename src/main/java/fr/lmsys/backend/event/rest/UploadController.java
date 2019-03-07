@@ -33,7 +33,7 @@ import fr.lmsys.backend.event.tools.FileUploadUtil;
 
 @RestController
 //@CrossOrigin
-@RequestMapping("/api/upload")
+@RequestMapping(path="/api/upload")
 public class UploadController {
 
 	/*@Autowired
