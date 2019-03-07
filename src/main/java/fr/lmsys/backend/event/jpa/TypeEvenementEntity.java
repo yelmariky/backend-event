@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "TYPE_EVENEMENT")
+@Table(name = "type_evenement")
 @Entity
 public class TypeEvenementEntity implements Serializable {
 
@@ -28,6 +28,16 @@ public class TypeEvenementEntity implements Serializable {
 	public TypeEvenementEntity(String typevent) {
 		this.typeEvenement = typevent;
 	}
+	
+	
+
+	public TypeEvenementEntity(long idTypeEvent, String typeEvenement) {
+		super();
+		this.idTypeEvent = idTypeEvent;
+		this.typeEvenement = typeEvenement;
+	}
+
+
 
 	/**
 	 * private String typeEvenement; private int idTypeEvent;
