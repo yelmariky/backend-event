@@ -1,0 +1,6 @@
+spring.application.name: backend
+spring.cloud.vault:
+    token: s.93Mv9wkFl3hjfHbnrm51meWd
+    scheme: http
+    kv.enabled: true
+    
