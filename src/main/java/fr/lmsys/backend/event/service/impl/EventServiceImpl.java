@@ -92,7 +92,7 @@ public class EventServiceImpl implements EventService {
 			dozerBeanMapper.map(event, eventToUpdate.get());
 
 			eventRepository.save(eventToUpdate.get());
-			return dozerBeanMapper.map(eventToUpdate.get(), Event.class);
+			return dozerBeanMapper.map(eventToUpdate, Event.class);
 		} else {
 			return null;
 		}

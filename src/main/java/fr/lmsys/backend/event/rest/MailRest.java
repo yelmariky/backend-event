@@ -17,7 +17,7 @@ import fr.lmsys.backend.event.service.impl.MailService;
 
 @RestController
 //@CrossOrigin
-@RequestMapping(path="/api/mail")
+@RequestMapping("/api/mail")
 public class MailRest {
 	@Autowired
 	private MailService mailService;

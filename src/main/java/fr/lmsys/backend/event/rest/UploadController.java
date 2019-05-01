@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -28,12 +26,11 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import fr.lmsys.backend.event.modele.Document;
 import fr.lmsys.backend.event.modele.DocumentMetadata;
 import fr.lmsys.backend.event.service.ArchiveService;
-import fr.lmsys.backend.event.service.impl.UserServiceImpl;
 import fr.lmsys.backend.event.tools.FileUploadUtil;
 
 @RestController
 //@CrossOrigin
-@RequestMapping(path="/api/upload")
+@RequestMapping("/api/upload")
 public class UploadController {
 
 	/*@Autowired
@@ -41,7 +38,6 @@ public class UploadController {
 	*/
 	@Autowired
 	private  ArchiveService archiveService;
-	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
 	//List<String> files = new ArrayList<String>();
 	
@@ -67,15 +63,12 @@ public class UploadController {
 			//check if images
 			
 			String contentType = file.getContentType();
-			logger.debug("contentType: "+contentType);
 			if (!FileUploadUtil.isValidImageFile(contentType)) {
 				throw new Exception("Invalid image File! Content Type :-" + contentType);
 			}
 			
-			logger.debug("file01: "+file.getOriginalFilename()+"*****"+file.getBytes());
 			
 			Document document = new Document(file.getBytes(), file.getOriginalFilename(), LocalDateTime.now(), idUser);
-			
 			archiveService.save(document);
 		//	storageService.store(file);
 			files.add(file.getOriginalFilename());
