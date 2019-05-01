@@ -1,6 +1,13 @@
-spring.application.name: backend
-spring.cloud.vault:
-    token: s.93Mv9wkFl3hjfHbnrm51meWd
-    scheme: http
-    kv.enabled: true
+
+spring:
+    application:
+        name: backend
+    cloud:
+        vault:
+            token: 00000000-0000-0000-0000-000000000000
+            uri: http://localhost:8200
+            scheme: http
+            kv:
+               enabled: true
+
     
