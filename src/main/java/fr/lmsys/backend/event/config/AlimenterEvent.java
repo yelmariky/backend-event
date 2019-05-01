@@ -2,13 +2,10 @@ package fr.lmsys.backend.event.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import fr.lmsys.backend.event.jpa.TypeEvenementEntity;
 import fr.lmsys.backend.event.repositories.TypeEventRepository;
 
-@Profile("local")
 @Component
 public class AlimenterEvent implements CommandLineRunner {
 	@Autowired
@@ -17,14 +14,14 @@ public class AlimenterEvent implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		typeEventRepo.save(new TypeEvenementEntity(1,"Attraction"));
-		typeEventRepo.save(new TypeEvenementEntity(2,"Salon professionel ou Exposition"));
+	/*	typeEventRepo.save(new TypeEvenementEntity("Attraction"));
+		typeEventRepo.save(new TypeEvenementEntity("Salon professionel ou Exposition"));
 		
-		typeEventRepo.save(new TypeEvenementEntity(3,"Formation ou Atelier"));
-		typeEventRepo.save(new TypeEvenementEntity(4,"Sportif"));
-		typeEventRepo.save(new TypeEvenementEntity(5,"Conférence ou Séminaire"));
-		typeEventRepo.save(new TypeEvenementEntity(6,"Dîner ou Gala"));
-	
+		typeEventRepo.save(new TypeEvenementEntity("Formation ou Atelier"));
+		typeEventRepo.save(new TypeEvenementEntity("Sportif"));
+		typeEventRepo.save(new TypeEvenementEntity("Conférence ou Séminaire"));
+		typeEventRepo.save(new TypeEvenementEntity("Dîner ou Gala"));
+		*/
 //		//user1
 //		User u = new User();
 //	//	u.setAdress(new Adress("adresse01","94260","FRANCE"));

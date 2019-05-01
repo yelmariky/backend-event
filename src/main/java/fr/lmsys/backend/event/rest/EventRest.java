@@ -13,9 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +26,7 @@ import fr.lmsys.backend.event.service.EventService;
 
 @RestController
 //@CrossOrigin
-@RequestMapping(path="/api/events")
+@RequestMapping("/api/events")
 public class EventRest   {
 	@Autowired
 	private EventService eventService;
@@ -42,7 +40,7 @@ public class EventRest   {
 		eventService.saveEvent(event);
 	}
 */	
-	 @PostMapping(value = "/_save")//, method = RequestMethod.POST)
+	 @RequestMapping(value = "/_save", method = RequestMethod.POST)
 	public ResponseEntity<Event> saveEvent(@RequestBody Event event,HttpServletRequest request) throws  Exception {
 		 if(event.getStartEvent().compareTo(event.getEndEvent())>0){
 			 return new ResponseEntity<Event>(event, HttpStatus.NOT_ACCEPTABLE);
@@ -52,7 +50,7 @@ public class EventRest   {
 	}
 	 
 	//@CrossOrigin(origins={"https://lebonevenement.fr","http://localhost:4200"},maxAge=600)
-	@GetMapping(value = "/_getAll")//, method = RequestMethod.GET)
+	@RequestMapping(value = "/_getAll", method = RequestMethod.GET)
 	public List<Event> getAllEvents() {
 		return eventService.getEvents();
 	}
