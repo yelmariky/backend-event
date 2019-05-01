@@ -2,7 +2,6 @@ package fr.lmsys.backend.event;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 
 import org.dozer.DozerBeanMapper;
 import org.junit.Assert;
@@ -23,7 +22,6 @@ import fr.lmsys.backend.event.service.impl.CryptSh;
 import fr.lmsys.backend.event.service.impl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-
 public class UserServiceUnitTest {
 	
 	@Mock
@@ -88,11 +86,10 @@ public class UserServiceUnitTest {
 		
 		UsersEntity ujpa=dozer.map(user, UsersEntity.class);
 	
-		Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Arrays.asList(ujpa));
 		Mockito.when(userRepository.save(ujpa)).thenReturn(ujpa);
 		User usaved=userService.saveUser(user);
 		
-		Assert.assertNull(usaved);
+		Assert.assertNotNull(usaved);
 
 	}
 }
