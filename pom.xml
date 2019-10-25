@@ -14,8 +14,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-<!-- 		<version>2.1.0.RELEASE</version> -->
-		 <version>2.0.5.RELEASE</version>
+		<!-- <version>2.1.0.RELEASE</version> -->
+		<version>2.0.5.RELEASE</version>
 		<!-- <version>2.0.1.RELEASE</version> -->
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
@@ -24,7 +24,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		  <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+		<keycloack.version>4.8.2.Final</keycloack.version>
+		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
 		<sonar.exclusions>
 			**/modele/**/*,
 			**/jpa/*
@@ -46,7 +47,7 @@
 		<!-- actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-actuator</artifactId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
@@ -58,18 +59,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!-- <exclusions> -->
-			<!-- <exclusion> -->
-			<!-- <groupId>org.springframework.boot</groupId> -->
-			<!-- <artifactId>spring-boot-starter-tomcat</artifactId> -->
-			<!-- </exclusion> -->
-			<!-- </exclusions> -->
 		</dependency>
 		<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-mail</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
+		<dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+        </dependency>
+<!-- 		<dependency> -->
+<!--             <groupId>org.springframework.boot</groupId> -->
+<!--             <artifactId>spring-boot-starter-security</artifactId> -->
+<!--         </dependency> -->
 		<!-- <dependency> -->
 		<!-- <groupId>org.springframework.boot</groupId> -->
 		<!-- <artifactId>spring-boot-starter-logging</artifactId> -->
@@ -156,32 +158,40 @@
 			</snapshots>
 		</repository>
 	</repositories>
-<!-- 	<dependencyManagement> -->
-<!-- 		<dependencies> -->
-<!-- 			<dependency> -->
-<!-- 				<groupId>org.springframework.cloud</groupId> -->
-<!-- 				<artifactId>spring-cloud-vault-dependencies</artifactId> -->
-<!-- 				<version>2.1.1.BUILD-SNAPSHOT</version> -->
-<!-- 				<scope>import</scope> -->
-<!-- 				<type>pom</type> -->
-<!-- 			</dependency> -->
-<!-- 		</dependencies> -->
-<!-- 	</dependencyManagement> -->
-<dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<!-- <dependencyManagement> -->
+	<!-- <dependencies> -->
+	<!-- <dependency> -->
+	<!-- <groupId>org.springframework.cloud</groupId> -->
+	<!-- <artifactId>spring-cloud-vault-dependencies</artifactId> -->
+	<!-- <version>2.1.1.BUILD-SNAPSHOT</version> -->
+	<!-- <scope>import</scope> -->
+	<!-- <type>pom</type> -->
+	<!-- </dependency> -->
+	<!-- </dependencies> -->
+	<!-- </dependencyManagement> -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.keycloak.bom</groupId>
+				<artifactId>keycloak-adapter-bom</artifactId>
+				<version>${keycloack.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 
 	<build>
 		<plugins>
+	
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -196,6 +206,70 @@
 			</plugin>
 		</plugins>
 	</build>
-
+<profiles>
+<profile>
+<id>swager</id>
+<build>
+<plugins>
+		<plugin>
+    <!-- Generates swagger.json -->
+    <groupId>com.github.kongchen</groupId>
+    <artifactId>swagger-maven-plugin</artifactId>
+    <version>3.1.7</version>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <apiSources>
+            <apiSource>
+                <springmvc>true</springmvc>
+                <locations>fr.lmsys.backend.event.rest</locations>
+                <schemes>http,https</schemes>
+                <info>
+                    <title>example</title>
+                    <description>
+                    This is the documentation for this project
+                    </description>
+                    <contact>
+                        <email>totallyrealperson@example.com</email>
+                        <name>User Name</name>
+                        <url>https://example.com</url>
+                    </contact>
+                    <version>0.0.1</version>
+                </info>
+                <securityDefinitions>
+                    <securityDefinition>
+                        <name>basicAuth</name>
+                        <type>basic</type>
+                    </securityDefinition>
+                </securityDefinitions>
+                <swaggerApiReader>com.github.kongchen.swagger.docgen.reader.SpringMvcApiReader</swaggerApiReader>
+                <swaggerExtensions>com.github.kongchen.swagger.docgen.spring.SpringSwaggerExtension</swaggerExtensions>
+                <modelConverters>io.swagger.validator.BeanValidator</modelConverters>
+                <swaggerDirectory>${project.basedir}/docs/swagger</swaggerDirectory>
+                <swaggerFileName>swagger</swaggerFileName>
+                <outputFormats>yaml</outputFormats>
+                <attachSwaggerArtifact>true</attachSwaggerArtifact>
+            </apiSource>
+        </apiSources>
+    </configuration>
+    <dependencies>
+        <!-- Adding dependency to swagger-hibernate-validations to enable the BeanValidator for model converter -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-hibernate-validations</artifactId>
+            <version>1.5.20</version>
+        </dependency>
+    </dependencies>
+</plugin>
+</plugins>
+</build>
+</profile>
+</profiles>
 
 </project>
