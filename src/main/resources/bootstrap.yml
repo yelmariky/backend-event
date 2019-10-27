@@ -4,7 +4,7 @@ spring:
         name: backend
     cloud:
         vault:
-            token: s.hoOPjBoqxDJj6WU6kTG2kOwP
+            token: s.fzS3VOP6JCn5nwFfgb5PBbdx
             uri: http://localhost:8200
             scheme: http
             kv:
