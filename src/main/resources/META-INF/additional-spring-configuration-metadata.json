@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "keycloak.auth-server-url",
+    "type": "java.lang.String",
+    "description": "A description for 'keycloak.auth-server-url'"
+  },
+  {
+    "name": "keycloak.security-constraints[1].auth-roles[0]",
+    "type": "java.lang.String",
+    "description": "A description for 'keycloak.security-constraints[1].auth-roles[0]'"
+  }
+]}
