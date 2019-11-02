@@ -1,7 +1,7 @@
 0. you must run your application as below
 1. spring.config.additional-location=startup-backend.properties
-2. demarrer keycloack
-3. demarrer vault
+2. startup keycloack
+3. startup vault
 4. to secure the password define in file properties us this line command
 mvn -Djasypt.encryptor.password=supersecretz spring-boot:run# backend-event
 5. the content of startup-backend.properties is as below
