@@ -1,0 +1,8 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        password: ${datasource.password}
+        url: ${datasource.url}
+        username: ${datasource.username}
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

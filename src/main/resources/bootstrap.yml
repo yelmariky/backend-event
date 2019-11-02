@@ -1,13 +1,10 @@
-
 spring:
-    application:
-        name: backend
-    cloud:
-        vault:
-            token: s.fzS3VOP6JCn5nwFfgb5PBbdx
-            uri: http://localhost:8200
-            scheme: http
-            kv:
-               enabled: true
-
-    
+  application:
+    name: backend
+  cloud:
+    vault:
+      token: ${TOKEN_VAULT}
+      uri: http://localhost:8200
+      scheme: http
+      kv:
+        enabled: true
