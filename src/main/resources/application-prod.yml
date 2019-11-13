@@ -1,8 +1,10 @@
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        password: ${datasource.password}
-        url: ${datasource.url}
-        username: ${datasource.username}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        hibernate:
+          ddl-auto: update
