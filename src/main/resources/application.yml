@@ -1,20 +1,20 @@
-keycloak:
-    auth-server-url: http://localhost:8088/auth
-    credentials:
-        secret: 91032c16-8571-4513-86c5-84ccd3824a81
-    realm: lmsys-realm
-    resource: event-backend
-    security-constraints:
-    -   authRoles:
-        - USER
-        securityCollections:
-        -   patterns:
-            - /api/events/*
-    -   authRoles:
-        - ADMIN
-        securityCollections:
-        -   patterns:
-            - /api/user/*
+#keycloak:
+#    auth-server-url: http://localhost:8088/auth
+#    credentials:
+#        secret: 91032c16-8571-4513-86c5-84ccd3824a81
+#    realm: lmsys-realm
+#    resource: event-backend
+#    security-constraints:
+#    -   authRoles:
+#        - USER
+#        securityCollections:
+#        -   patterns:
+#            - /api/events/*
+#    -   authRoles:
+#        - ADMIN
+#        securityCollections:
+#        -   patterns:
+#            - /api/user/*
 management:
     endpoint:
         health:
@@ -51,5 +51,3 @@ spring:
         multipart:
             max-file-size: 500KB
             max-request-size: 500KB
-            
-
