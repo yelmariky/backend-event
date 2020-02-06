@@ -9,14 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.lmsys.backend.event.modele.Event;
@@ -40,40 +41,40 @@ public class EventRest   {
 		eventService.saveEvent(event);
 	}
 */	
-	 @RequestMapping(value = "/_save", method = RequestMethod.POST)
+	 @PostMapping
 	public ResponseEntity<Event> saveEvent(@RequestBody Event event,HttpServletRequest request) throws  Exception {
 		 if(event.getStartEvent().compareTo(event.getEndEvent())>0){
 			 return new ResponseEntity<Event>(event, HttpStatus.NOT_ACCEPTABLE);
 		 }
-		 logger.info("**** remote host:"+request.getRemoteHost());
+		 
 		 return new ResponseEntity<Event>(eventService.saveEvent(event, urlName+request.getContextPath()+"/api/upload/user/"), HttpStatus.OK);
 	}
 	 
-	//@CrossOrigin(origins={"https://lebonevenement.fr","http://localhost:4200"},maxAge=600)
-	@RequestMapping(value = "/_getAll", method = RequestMethod.GET)
+	@GetMapping
+	//@PreAuthorize("hasAnyAuthority('ROLE_USER')")
 	public List<Event> getAllEvents() {
 		return eventService.getEvents();
 	}
 	
-	//@CrossOrigin(origins={"https://lebonevenement.fr","http://localhost:4200"},maxAge=600)
-	@RequestMapping(value = "/typevent/_getAll", method = RequestMethod.GET)
+	@GetMapping(value = "/typevent/_getAll")
+	//@PreAuthorize("hasAnyAuthority('ROLE_USER')")
 	public List<TypeEvenement> getAllTypeEvents() {
 		return eventService.getTypeEvents();
 	}
 	
-	@RequestMapping(value = "/_get/id/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> findEvent(@PathVariable(value = "id") String id) {
 		return new ResponseEntity<Event>(eventService.findEvent(id), HttpStatus.OK);
 
 	}
 	
-	@RequestMapping(value = "/_get/user/id/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/user/{id}")
 	public ResponseEntity<?> findEventByUser(@PathVariable(value = "id") String id) {
 		return new ResponseEntity<Set<Event>>(eventService.getEventsByUser(id), HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value = "/_update/id/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<Event> updateIframe(@PathVariable(value = "id") Long id, @RequestBody Event event) {
 		Event iframeToUpdate = eventService.updateEvent(event, id);
 		if (event == null) {
@@ -117,9 +118,9 @@ public class EventRest   {
 	        return LocalDate.now();
 	    }
 */
-	@ExceptionHandler(value = Exception.class)
-	public ResponseEntity<Object> nfeHandler(Exception ex) {
-		return new ResponseEntity<Object>(ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
-	}
+//	@ExceptionHandler(value = Exception.class)
+//	public ResponseEntity<Object> nfeHandler(Exception ex) {
+//		return new ResponseEntity<Object>(ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+//	}
 
 }

@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +32,7 @@ import fr.lmsys.backend.event.service.impl.MailService;
 
 @RestController
 //@CrossOrigin
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserRest {
 
 	@Autowired
@@ -41,7 +45,7 @@ public class UserRest {
 	@Value("${mail.from}")
 	String from;
 
-	@RequestMapping(value = "/_save", method = RequestMethod.PUT)
+	@PostMapping
 	public User saveUser(@RequestBody User user) throws Exception {
 		User userRes= userService.saveUser(user);
 		
@@ -60,7 +64,7 @@ public class UserRest {
 		return userRes;
 	}
 
-	@RequestMapping(value = "/_update/pass", method = RequestMethod.POST)
+	@PostMapping(value = "/_update/pass")
 	public ResponseEntity<User> changePassword(@RequestBody User userToChange) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User user = userService.changePassword(userToChange.getIdUsers(), userToChange.getPassword());
 		if (user == null) {
@@ -70,17 +74,18 @@ public class UserRest {
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/_getAll", method = RequestMethod.GET)
+	@GetMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
 
-	@RequestMapping(value = "/_get/id/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	public User findUser(@PathVariable(value = "id") String idUser) {
 		return userService.findUser(idUser);
 	}
 	
-	@RequestMapping(value = "/_find", method = RequestMethod.POST)
+	@PostMapping(value = "/_find")
 	public ResponseEntity<User> findUserByPost(@RequestBody User userToFind) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		User user = userService.findUserByMailAndPass(userToFind.getEmail(), userToFind.getPassword());
 		if (user == null) {
@@ -89,7 +94,7 @@ public class UserRest {
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/_send", method = RequestMethod.GET)
+	@GetMapping(value = "/_send")
 	public User changePasswordByMail(@RequestParam(value = "mail") String mail) throws Exception {
 		User user = userService.findUserByMail(mail);
 		if (user == null) {
@@ -100,7 +105,7 @@ public class UserRest {
 		return user;
 	}
 	
-	@RequestMapping(value = "/_update", method = RequestMethod.POST)
+	@PutMapping
 	public ResponseEntity<User> updateUser( @RequestBody User user,@RequestParam(value = "ismail") boolean isMail) throws AddressException, MessagingException, UnsupportedEncodingException {
 		User userToUpdate = userService.updateUser(user,isMail);
 		
@@ -111,7 +116,7 @@ public class UserRest {
 		return new ResponseEntity<User>(userToUpdate, HttpStatus.OK);
 
 	}
-	@RequestMapping(value = "/_activate", method = RequestMethod.POST)
+	@PostMapping(value = "/_activate")
 	public ResponseEntity<User> activateUser( @RequestBody String idUser) {
 		User userToUpdate = userService.activateUser(idUser);
 		if (userToUpdate == null) {
@@ -121,7 +126,7 @@ public class UserRest {
 
 	}
 	
-	@RequestMapping(value = "/_nbevent/user/{id_user}", method = RequestMethod.GET)
+	@GetMapping(value = "/_nbevent/user/{id_user}")
 	public ResponseEntity<Integer> calculNbEvent(@PathVariable(value = "id_user") String idUser) {
 		User user = userService.findUser(idUser);
 		if (user == null) {
