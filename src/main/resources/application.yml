@@ -51,3 +51,19 @@ spring:
         multipart:
             max-file-size: 500KB
             max-request-size: 500KB
+#resource server     
+security:
+    oauth2:
+        resource:
+            id: event-backend
+            jwt:
+                key-value: ${key.cloak.value:zzzzzzz}
+            token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
+            user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
+        client:
+            access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
+            user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
+            client-id: event-backend
+            client-secret: ${client.secret:xxxx}
+            grant-type: client_credentials
+            scope: openid
