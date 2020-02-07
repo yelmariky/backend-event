@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import fr.lmsys.backend.event.jpa.UsersEntity;
 import fr.lmsys.backend.event.modele.User;
@@ -21,7 +21,7 @@ import fr.lmsys.backend.event.repositories.UserRepository;
 import fr.lmsys.backend.event.service.impl.CryptSh;
 import fr.lmsys.backend.event.service.impl.UserServiceImpl;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
 public class UserServiceUnitTest {
 	
 	@Mock
