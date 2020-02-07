@@ -64,6 +64,6 @@ security:
             access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
             user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
             client-id: event-backend
-            client-secret: ${client.secret:xxxxxx}
+            client-secret: 91032c16-8571-4513-86c5-84ccd3824a81
             grant-type: client_credentials
             scope: openid
