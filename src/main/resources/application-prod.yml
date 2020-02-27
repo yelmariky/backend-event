@@ -8,3 +8,13 @@ spring:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         hibernate:
           ddl-auto: update
+rest:
+    security:
+        issuer-uri: http://localhost:8088/auth/realms/lmsys-realm
+        enabled: true
+        api-matcher: /api/**
+        cors:
+            allowed-headers: '*'
+            allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+            allowed-origins: '*'
+            max-age: 3600

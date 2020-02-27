@@ -2,6 +2,8 @@ archived
 archive
 target
 .settings
+**/*.jar
+**/data
 .classpath
 *.log
 *.sql

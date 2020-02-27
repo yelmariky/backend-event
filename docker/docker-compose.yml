@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+
+  keycloak:
+     image: jboss/keycloak:4.0.0.Final
+     container_name: keycloak
+     restart: on-failure
+     command:
+      - "-b"
+      - "0.0.0.0"
+      - "-Dkeycloak.migration.action=import"
+      - "-Dkeycloak.migration.provider=dir"
+      - "-Dkeycloak.migration.dir=/config/"
+      - "-Dkeycloak.migration.strategy=IGNORE_EXISTING"
+     volumes:
+       - ./config:/config/
+     environment:
+       - KEYCLOAK_USER=admin
+       - KEYCLOAK_PASSWORD=password
+       - DB_VENDOR=postgres
+       - DB_USER=admin
+       - DB_PASSWORD=password
+       - DB_ADDR=keycloak-db
+       - DB_PORT=5432
+       - DB_DATABASE=keycloakdb
+     ports:
+       - "8082:8080"
+     depends_on:
+       - keycloak-db
+     #networks: 
+      # - backend
+
+  keycloak-db:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloakdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    #networks: 
+     # - backend
+  event-mysql:
+    container_name: event-mysql
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=backend_or
+      - MYSQL_ROOT_PASSWORD=mypassword
+     # - MYSQL_ROOT_HOST='%'
+      - MYSQL_USER=lmsys
+      - MYSQL_PASSWORD=kiram
+    volumes:
+      - ./data/mysql-data:/var/lib/mysql
+     # - ./event-db-init/:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  
+  application:
+    restart: always
+    #image: backend/event:1.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8081" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    environment: 
+      WAIT_HOSTS: keycloak:8080
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://event-mysql:3306/backend_or?verifyServerCertificate=false&useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+      SPRING_DATASOURCE_USERNAME: lmsys
+      SPRING_DATASOURCE_PASSWORD: kiram 
+    depends_on:
+      - keycloak
+      - event-mysql
+    #networks: 
+     # - backend
+
+volumes:
+  pgdata:
+  
+#networks: 
+  #backend:
