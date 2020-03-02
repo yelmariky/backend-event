@@ -1,7 +1,9 @@
-0. you must run your application as below
+0. cd docker/traefik && docker-compose -d --build  
+1- cd docker docker-compose up -d --build --scale application=2
+2- on postman: http://localhost:8082/auth/realms/lmsys-realm/protocol/openid-connect/token
+3- http://application.localhost/event-backend/api/events/typevent/_getAll
+you must run your application as below
 1. spring.config.additional-location=startup-backend.properties
-2. startup keycloack
-3. startup vault
 4. to secure the password define in file properties us this line command
 mvn -Djasypt.encryptor.password=supersecretz spring-boot:run# backend-event
 5. the content of startup-backend.properties is as below
