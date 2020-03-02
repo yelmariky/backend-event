@@ -4,6 +4,7 @@ target
 .settings
 **/*.jar
 **/data
+.factorypath
 .classpath
 *.log
 *.sql
