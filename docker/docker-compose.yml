@@ -70,8 +70,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    #ports:
-     # - "8085:8081" # Forward the exposed port 8080 on the container to port 8080 on the host machine
     expose: 
       - "8081"
     environment: 
@@ -80,40 +78,23 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://event-mysql:3306/backend_or?verifyServerCertificate=false&useUnicode=yes&characterEncoding=UTF-8&useSSL=false
       SPRING_DATASOURCE_USERNAME: lmsys
       SPRING_DATASOURCE_PASSWORD: kiram
-      VIRTUAL_HOST: 'application.localhost'
+      ISSUER_URI: http://keycloak:8080/auth/realms
+      REALM_NAME: lmsys-realm
     depends_on:
       - keycloak
       - event-mysql
-      - nginx
     labels:
-     # - traefik.backend=application
-     # - "traefik.http.routers.myApplication.rule=Host(`application.localhost`)"
-     #- "traefik.docker.network=web"
-     #- "traefik.http.routers.myApplication.entrypoints=http"
-      - "traefik.enable=false"
-     # - "traefik.port=8081"
+      - "traefik.http.routers.application.rule=Host(`application.localhost`)"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.application.entrypoints=http"
+      - "traefik.enable=true"
+  
      # - "traefik.http.services.application-app.loadbalancer.server.port=8081"
-     # - traefik.protocol=http
+  
     networks: 
       - web
       - backend
-  nginx:
-    image: jwilder/nginx-proxy
-    volumes:
-  #     # It needs to access Docker's API, so we mount the Unix socket
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-  #   # Listens on port 80, accessed by our host on http://localhost
-    ports:
-      - "9009:80"
-    labels:
-  #    # - traefik.backend=application
-      - "traefik.http.routers.myApplication.rule=Host(`application.localhost`)"
-      - "traefik.docker.network=web"
-      - "traefik.http.routers.myApplication.entrypoints=http"
-      - "traefik.enable=true"
-    networks: 
-     - web
-     - backend
+
 
 volumes:
   pgdata:
