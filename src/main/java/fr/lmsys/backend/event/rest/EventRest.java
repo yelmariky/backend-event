@@ -58,7 +58,8 @@ public class EventRest   {
 	
 	@GetMapping(value = "/typevent/_getAll")
 	//@PreAuthorize("hasAnyAuthority('ROLE_USER')")
-	public List<TypeEvenement> getAllTypeEvents() {
+	public List<TypeEvenement> getAllTypeEvents(HttpServletRequest http) {
+		logger.info("url: {} au port  {}",http.getLocalAddr(),http.getLocalPort());
 		return eventService.getTypeEvents();
 	}
 	
