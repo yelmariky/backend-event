@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   
   labels:
-    run: polling-app-server
-  name: polling-app-server
+    run: event-backend
+  name: event-backend
  
 spec:
   progressDeadlineSeconds: 600
@@ -12,17 +12,17 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      run: polling-app-server
+      run: event-backend
   
   template:
     metadata:
      
       labels:
-        run: polling-app-server
+        run: event-backend
     spec:
       containers:
-      - name: polling-app-server
-        image: event/backend:v2
+      - name: event-backend
+        image: event/backend:v4
         imagePullPolicy: Never
         ports:
           - name: http
@@ -31,37 +31,22 @@ spec:
           limits:
             cpu: 1
             memory: "1Gi"
-        env:                  # Environment variables supplied to the Pod
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: kiram
-
-        - name: SPRING_DATASOURCE_USERNAME
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: mysql-secret
-         
-        - name: SPRING_PROFILES_ACTIVE
-          value: prod
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://polling-app-mysql:3306/backend_or?verifyServerCertificate=false&useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-        - name: ISSUER_URI
-          value: http://keycloak:8080/auth/realms
-        - name: REALM_NAME
-          value: lmsys-realm
+        envFrom:
+          - secretRef:
+              name: appli-secret-pub
 ---
 apiVersion: v1
 kind: Service
 metadata:
   
   labels:
-    run: polling-app-server
-  name: polling-app-server
+    run: event-backend
+  name: event-backend
   
 spec:
-  
+  clusterIP: 10.110.0.119
   externalIPs:
-  - [your-IP-ADRESS]
+  - 192.168.1.10
   externalTrafficPolicy: Cluster
   ports:
   - nodePort: 30290
@@ -69,6 +54,6 @@ spec:
     protocol: TCP
     targetPort: 8081
   selector:
-    run: polling-app-server
+    run: event-backend
   sessionAffinity: None
   type: NodePort
