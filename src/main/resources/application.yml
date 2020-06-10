@@ -57,13 +57,13 @@ security:
         resource:
             id: event-backend
             jwt:
-                key-value: ${key.cloak.value:zzzzzzz}
+                key-value: ${KEYCLOAK_PUBLIC_RS256:zzzzzzz}
             token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
             user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
         client:
             access-token-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token
             user-authorization-uri: ${rest.security.issuer-uri}/protocol/openid-connect/auth
             client-id: event-backend
-            client-secret: ${client.secret:xxxx}
+            client-secret: ${APP_SECRET:xxxx}
             grant-type: client_credentials
             scope: openid

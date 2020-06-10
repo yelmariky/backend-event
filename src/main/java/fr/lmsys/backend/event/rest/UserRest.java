@@ -75,7 +75,7 @@ public class UserRest {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("#oauth2.hasAnyScope('phone','test01','openid')")
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
