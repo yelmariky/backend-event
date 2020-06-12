@@ -53,6 +53,7 @@ public class EventRest   {
 	@GetMapping
 	//@PreAuthorize("hasAnyAuthority('ROLE_USER')")
 	public List<Event> getAllEvents() {
+		logger.info("call events: OK");
 		return eventService.getEvents();
 	}
 	

@@ -8,7 +8,7 @@ metadata:
  
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -22,15 +22,15 @@ spec:
     spec:
       containers:
       - name: event-backend
-        image: event/backend:v4
+        image: event/backend:latest
         imagePullPolicy: Never
         ports:
           - name: http
             containerPort: 8081 # The port that the container exposes
         resources:
           limits:
-            cpu: 1
-            memory: "1Gi"
+            cpu: "0.5"
+            memory: "500Mi"
         envFrom:
           - secretRef:
               name: appli-secret-pub
@@ -44,16 +44,12 @@ metadata:
   name: event-backend
   
 spec:
-  clusterIP: 10.110.0.119
-  externalIPs:
-  - 192.168.1.10
   externalTrafficPolicy: Cluster
   ports:
   - nodePort: 30290
-    port: 9000
+    port: 80
     protocol: TCP
     targetPort: 8081
   selector:
     run: event-backend
-  sessionAffinity: None
   type: NodePort

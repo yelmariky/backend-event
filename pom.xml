@@ -221,7 +221,7 @@
 							<version>${project.version}</version>
 							<type>jar</type>
 							<overWrite>false</overWrite>
-							<outputDirectory>docker</outputDirectory>
+							<outputDirectory>deploy/docker</outputDirectory>
 
 						</artifactItem>
 					</artifactItems>
