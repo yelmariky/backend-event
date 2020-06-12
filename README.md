@@ -23,5 +23,5 @@
 5- kubectl create -f .
 6- create realm lmsys-realm on keycloak setting up bu kubernates
 6- to test by postman:http://localhost:8080/auth/realms/lmsys-realm/protocol/openid-connect/token
-7- and call microservice http://localhost:30290/event-backend/api/events/typevent/_getAll with generated token on 6steps
+7- and call microservice http://localhost/event-backend/api/events/typevent/_getAll with generated token on 6steps
 ```
