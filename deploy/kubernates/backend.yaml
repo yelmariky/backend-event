@@ -44,12 +44,10 @@ metadata:
   name: event-backend
   
 spec:
-  externalTrafficPolicy: Cluster
   ports:
-  - nodePort: 30290
-    port: 80
+  - port: 80
     protocol: TCP
     targetPort: 8081
   selector:
     run: event-backend
-  type: NodePort
+  type: ClusterIP
